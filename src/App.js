@@ -310,6 +310,7 @@ import Logout from './components/Logout';
 import { Route, Routes } from 'react-router-dom';
 import Heading from './components/Heading';
 
+
 function App() {
   const [data, setData] = useState({
     uniqueVisitor: 0,
@@ -320,7 +321,7 @@ function App() {
   });
 
   useEffect(() => {
-    
+
     const fetchData = async () => {
       try {
         // Fetch uniqueVisitor 
@@ -328,7 +329,7 @@ function App() {
         const dataUnique = await responseUnique.json();
         const uniqueVisitors = dataUnique.totalUniqueUsers;
         const pageLoads = dataUnique.averagePageLoadTime[0].pageLoadTime;
-        console.log("value", pageLoads)
+
 
         // Fetch conversionRate, orderValue, and cartCount 
         const responseCustomer = await fetch('https://socket-io-server-mc3e.onrender.com/api/v1/getCustomerInfo');
@@ -355,7 +356,7 @@ function App() {
     <div className="App">
       <Heading />
       <Navbar />
-
+    
       <Routes>
         <Route path="/dashboard" element={<Dashboard data={data} />} />
         <Route path="/staffdetails" element={<StaffDetails />} />

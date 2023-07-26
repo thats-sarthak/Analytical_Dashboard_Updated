@@ -2,13 +2,14 @@ import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 
 
-
 function StaffDetails() {
 
     const[data, setData] = useState([])
 
     useEffect( ()=> {
+      
     axios.get('https://jsonplaceholder.typicode.com/users')
+    
     .then(res => setData(res.data))
         }, [])
     return (
