@@ -327,16 +327,21 @@ function App() {
         // Fetch uniqueVisitor 
         const responseUnique = await fetch('https://socket-io-server-mc3e.onrender.com/api/v1/getInfo');
         const dataUnique = await responseUnique.json();
-        const uniqueVisitors = dataUnique.totalUniqueUsers;
-        const pageLoads = dataUnique.averagePageLoadTime[0].pageLoadTime;
+        const uniqueVisitors = dataUnique?.generalInfo  && dataUnique?.generalInfo[0]?.totalUniqueUsers?.value
+        // console.log("uniqueVisitors", uniqueVisitors ); 
+        const pageLoads = dataUnique.generalInfo[0].averagePageLoadTime.value 
+        console.log("value", pageLoads)
+        
 
 
         // Fetch conversionRate, orderValue, and cartCount 
         const responseCustomer = await fetch('https://socket-io-server-mc3e.onrender.com/api/v1/getCustomerInfo');
         const dataCustomer = await responseCustomer.json();
-        const conversionRate = dataCustomer.conversionRate;
-        const orderValue = dataCustomer.totalOrderAvg[0].avgOrderValue;
-        const cartCount = dataCustomer.cartAbandonmentCount;
+        const conversionRate = dataCustomer.customerInfo[0].conversionRate;
+        console.log("value", conversionRate)
+        // const orderValue = dataCustomer.totalOrderAvg &&  dataCustomer.totalOrderAvg[0].avgOrderValue;
+        const orderValue = dataCustomer.customerInfo[0].avgOrderValue;
+        const cartCount = dataCustomer.customerInfo[0].cartAbandonmentCount;
 
         setData({
           uniqueVisitor: uniqueVisitors,

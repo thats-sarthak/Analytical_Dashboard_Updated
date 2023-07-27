@@ -1,14 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 
 const Dashboard = (props) => {
-    // let uniqueVisitor = props.uniqueVisitor;
-    // let conversionRate = props.conversionRate
-    // let orderValue = props.orderValue
-    // let cartCount = props.cartCount
-    // let data = props.data
-    const { uniqueVisitor, conversionRate, orderValue, cartCount, pageLoad } = props.data
-
+  // let uniqueVisitor = props.uniqueVisitor;
+  // let conversionRate = props.conversionRate
+  // let orderValue = props.orderValue
+  // let cartCount = props.cartCount
+  // let data = props.data
+  const { uniqueVisitor, conversionRate, orderValue, cartCount, pageLoad } = props.data
+  
+  const[showModal, setShowModal] = useState(false);
+  const[showCrate, setShowCrate] = useState(false);
+  const[orderValues, setOrderValue] = useState(false);
+  const[acount, setACount] = useState(false);
+  const[pTime, setPtime] = useState(false);
+  const[uniqueQuote,setUniqueQuote]= useState("");
+  const[pageTime,setPageTime]= useState("");
+  // const[crateQuote,setCrateQuote]= useState("");
+  
     // const Modal = () => {
     //   alert("Hi")
     //     return (
@@ -22,18 +31,53 @@ const Dashboard = (props) => {
 
 
 
-  const[showModal, setShowModal] = useState(false);
-  const[showCrate, setShowCrate] = useState(false);
-  const[orderValues, setOrderValue] = useState(false);
-  const[acount, setACount] = useState(false);
-  const[pTime, setPtime] = useState(false);
+
+
+
+    useEffect(() => {
+          const fetchData = async () => {
+            try {
+              const response = await fetch('https://socket-io-server-mc3e.onrender.com/api/v1/getInfo');
+              const data = await response.json();
+               setUniqueQuote(data?.generalInfo  && data?.generalInfo[0]?.totalUniqueUsers?.info);
+               setPageTime(data?.generalInfo  && data?.generalInfo[0]?.averagePageLoadTime?.info);
+              // console.log("info : ", uniqueQuote)
+            } catch (error) {
+              console.log(error);
+            }
+          };
+          fetchData();
+        }, []);
+
+
+
+
+
+
+        // useEffect(() => {
+        //   const fetchData = async () => {
+        //     try {
+        //       const response = await fetch('https://socket-io-server-mc3e.onrender.com/api/v1/getCustomerInfo');
+        //       const data = await response.json();
+        //       setCrateQuote(data?.generalInfo  && data?.customerInfo[0]?.totalUniqueUsers?.info);
+        //        setPageTime(data?.generalInfo  && data?.generalInfo[0]?.averagePageLoadTime?.info);
+        //       // console.log("info : ", uniqueQuote)
+        //     } catch (error) {
+        //       console.log(error);
+        //     }
+        //   };
+        //   fetchData();
+        // }, []);
+
+
 
 
   const MyModal = () => {
     return (
       <>
         <p>
-        In marketing, the unique visitors’ metric measures (and counts) the number of distinct individuals visiting a page or multiple pages on your website in a given time interval – regardless of how often they requested those pages.
+        {/* In marketing, the unique visitors’ metric measures (and counts) the number of distinct individuals visiting a page or multiple pages on your website in a given time interval – regardless of how often they requested those pages. */}
+            {uniqueQuote}
         </p>
         <button onClick={() => setShowModal(false)}>Ok</button>
       </>
@@ -91,7 +135,9 @@ const Dashboard = (props) => {
     return (
       <>
         <p>
-              Page load time, the duration it takes for a webpage to completely load in a user's web browser, is an essential factor in website performance and user experience. The loading time includes the download and rendering of all the elements present on the page, such as images, stylesheets, scripts, and other media types.
+              {/* Page load time, the duration it takes for a webpage to completely load in a user's web browser, is an essential factor in website performance and user experience. The loading time includes the download and rendering of all the elements present on the page, such as images, stylesheets, scripts, and other media types. */}
+
+              {pageTime}
         </p>
         <button onClick={() => setPtime(false)}>Ok</button>
       </>
