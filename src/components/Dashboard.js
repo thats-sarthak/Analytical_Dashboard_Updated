@@ -1,14 +1,42 @@
-import React, { useState } from 'react'
+ import React, { useState, useEffect } from 'react'
 
 
 const Dashboard = (props) => {
-    // let uniqueVisitor = props.uniqueVisitor;
-    // let conversionRate = props.conversionRate
-    // let orderValue = props.orderValue
-    // let cartCount = props.cartCount
-    // let data = props.data
-    const { uniqueVisitor, conversionRate, orderValue, cartCount, pageLoad } = props.data
+  // let uniqueVisitor = props.uniqueVisitor;
+  // let conversionRate = props.conversionRate
+  // let orderValue = props.orderValue
+  // let cartCount = props.cartCount
+  // let data = props.data
+  const { uniqueVisitor, conversionRate, orderValue, cartCount, pageLoad } = props.data
+  
+  const[showModal, setShowModal] = useState(false);
+  const[showCrate, setShowCrate] = useState(false);
+  const[orderValues, setOrderValue] = useState(false);
+  const[acount, setACount] = useState(false);
+  const[pTime, setPtime] = useState(false);
+  const[uniqueQuote,setUniqueQuote]= useState("");
+  const[pageTime,setPageTime]= useState("");
+  // const[pageTime,setPageTime]= useState("");
 
+
+  
+
+
+
+      useEffect(( ) =>{
+        let handler = () => {
+          setShowModal(false)
+          setShowCrate(false)
+          setOrderValue(false)
+          setACount(false)
+          setPtime(false)
+        }
+        document.addEventListener("mousedown", handler);
+      },[]);
+
+
+  // const[crateQuote,setCrateQuote]= useState("");
+  
     // const Modal = () => {
     //   alert("Hi")
     //     return (
@@ -22,18 +50,53 @@ const Dashboard = (props) => {
 
 
 
-  const[showModal, setShowModal] = useState(false);
-  const[showCrate, setShowCrate] = useState(false);
-  const[orderValues, setOrderValue] = useState(false);
-  const[acount, setACount] = useState(false);
-  const[pTime, setPtime] = useState(false);
+
+
+
+    useEffect(() => {
+          const fetchData = async () => {
+            try {
+              const response = await fetch('https://socket-io-server-mc3e.onrender.com/api/v1/getInfo');
+              const data = await response.json();
+               setUniqueQuote(data?.generalInfo  && data?.generalInfo[0]?.totalUniqueUsers?.info);
+               setPageTime(data?.generalInfo  && data?.generalInfo[0]?.averagePageLoadTime?.info);
+              // console.log("info : ", uniqueQuote)
+            } catch (error) {
+              console.log(error);
+            }
+          };
+          fetchData();
+        }, []);
+
+
+
+
+
+
+        // useEffect(() => {
+        //   const fetchData = async () => {
+        //     try {
+        //       const response = await fetch('https://socket-io-server-mc3e.onrender.com/api/v1/getCustomerInfo');
+        //       const data = await response.json();
+        //       setCrateQuote(data?.generalInfo  && data?.customerInfo[0]?.totalUniqueUsers?.info);
+        //        setPageTime(data?.generalInfo  && data?.generalInfo[0]?.averagePageLoadTime?.info);
+        //       // console.log("info : ", uniqueQuote)
+        //     } catch (error) {
+        //       console.log(error);
+        //     }
+        //   };
+        //   fetchData();
+        // }, []);
+
+
 
 
   const MyModal = () => {
     return (
       <>
         <p>
-        In marketing, the unique visitors’ metric measures (and counts) the number of distinct individuals visiting a page or multiple pages on your website in a given time interval – regardless of how often they requested those pages.
+        {/* In marketing, the unique visitors’ metric measures (and counts) the number of distinct individuals visiting a page or multiple pages on your website in a given time interval – regardless of how often they requested those pages. */}
+            {uniqueQuote}
         </p>
         <button onClick={() => setShowModal(false)}>Ok</button>
       </>
@@ -87,11 +150,49 @@ const Dashboard = (props) => {
 
 
 
+      // -------------------------------------Close Modals-------------------------------------
+
+
+      // const handleCloseModals = () => {
+      //   setShowModal(false);
+      //   setShowCrate(false);
+      //   setOrderValue(false);
+      //   setACount(false);
+      //   setPtime(false);
+      // };
+    
+      // useEffect(() => {
+      //   // Add event listener on mount to close modals when clicking outside
+      //   const handleOutsideClick = (event) => {
+      //     if (!event.target.closest('.modal-card')) {
+      //       handleCloseModals();
+      //     }
+      //   };
+    
+      //   window.addEventListener('click', handleOutsideClick);
+    
+      //   // Clean up the event listener on unmount
+      //   return () => {
+      //     window.removeEventListener('click', handleOutsideClick);
+      //   };
+      // }, []);
+
+
+
+      
+// --------------------------------------Close Modals---------------------------------------------
+
+
+
+
+
   const ShowPtime = () => {
     return (
       <>
         <p>
-              Page load time, the duration it takes for a webpage to completely load in a user's web browser, is an essential factor in website performance and user experience. The loading time includes the download and rendering of all the elements present on the page, such as images, stylesheets, scripts, and other media types.
+              {/* Page load time, the duration it takes for a webpage to completely load in a user's web browser, is an essential factor in website performance and user experience. The loading time includes the download and rendering of all the elements present on the page, such as images, stylesheets, scripts, and other media types. */}
+
+              {pageTime}
         </p>
         <button onClick={() => setPtime(false)}>Ok</button>
       </>
@@ -100,7 +201,8 @@ const Dashboard = (props) => {
 
    
 return (
-    <div style={{flexDirection:'column'}}>
+    <div style={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap',  alignItems:"start" }}>
+   {/* <div style={{flexDirection:'column'}}>  */}
       <div
         className="card text-white text-center m-3"
         style={{ width: "20rem", backgroundColor: "rgb(43, 43, 43)", marginTop: "0px !important" }}>
@@ -183,7 +285,7 @@ return (
         className="card text-white text-center m-3"
         style={{ width: "20rem", backgroundColor: "rgb(43, 43, 43)", marginTop: "0px !important" }}>
         <div className="card-body">
-          <h6 className="card-title" style={{ fontFamily: 'NHaasGroteskDSPro-65Md' }}>PAGE LOAD TIME</h6>
+          <h6 className="card-title" style={{ fontFamily: 'NHaasGroteskDSPro-65Md' }}>AVERAGE PAGE LOAD TIME</h6>
           <p className="card-text fw-bold fs-5" style={{ color: "#fcdf03" }}>
             {pageLoad}
           </p>
